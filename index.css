@@ -3,6 +3,32 @@
     background-color: rgb(40, 40, 40);
 }
 
+section {
+    padding: 0 20%;
+}
+
+nav {
+    position: fixed;
+    height: 100vh;
+}
+
+nav li {
+    list-style-type: none;
+    margin: 15% 2%;
+}
+
+nav a {
+    text-decoration: none;
+    font-size: 20px;
+    padding: 1%;
+}
+
+nav a:hover {
+    color: white;
+    background-color: rgb(71, 71, 71);
+    border-radius: 5px;
+}
+
 img {
     width: 1000px;
     display: block;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation</title>
+    <title>Working With Phone Calls</title>
     <link rel="stylesheet" href="index.css" >
 </head>
 <body>
@@ -14,279 +14,281 @@
             <li><a href="./connecting.html">Connecting Your Agent</a></li>
         </ol>
     </nav>
-    <div>
-        <h1>Working with Phone Calls</h1>
-        <p>How to use agents with inbound and outbound phone calls.</p>
-        <h2>Overview</h2>
-        <p>Vocode supports using agents with inbound and outbound phone calls.
-            You can <a href="./create.html">create custom agents</a> and use them to fullfill a variety of cases
-            like information collection, appointment scheduling, sales, customer support, and more.
-        </p>
-    </div>
-    <div>
-        <h2>Requirements</h2>
-        <ol>
-            <li><a href="https://ngrok.com/">Ngrok</a> (used to host the <code>TelephonyServer</code> locally)</li>
-            <li><a href="https://ffmpeg.org/">ffmpeg</a>(If you have Homebrew installed, run <code>brew install ffmpeg</code>)</li>
-            <li><a href="https://redis.io/">Redis</a>(If you have Homebrew installed, run <code>brew install redis</code>)</li>
-            <li><a href="https://www.docker.com/">Docker</a>(optional)</li>
-        </ol>
-    </div>
-    <div>
-        <h2>Environments</h2>
-        <ol>
-            <li>
-                You will need to get API keys for:
-                <ul>
-                    <li><a>Deepgram</a> (for speech transcription)</li>
-                    <li><a>OpenAI</a> (for the underlying agent)</li>
-                    <li><a>Azure</a> (for speech synthesis)</li>
-                    <li><a>Twilio</a> (for telephony)</li>
-                </ul>
-            </li>
-            <li>Navigate to the <code>telephony_app</code> folder, located at the <code>apps</code>folder</li>
-            <li>
-                Copy the <code>.env.template</code> file and fill in the values
-                of your API keys. You can easily do so by running the code below:
-                <pre>
-                    <code>
-                        cp .env.template .env
-                    </code>
-                </pre>
-            </li>
-            <li>
-                Set up hosting so that Twilio can hit your server. An easy
-                way to do this is through <code>ngrok</code>: in our code we set it
-                up to be running on port 3000, run:
-                <pre>
-                    <code>
-                        ngrok http 3000
-                    </code>
-                </pre>
-                <div>If you are setting it up through <code>ngrok</code> and the code above gets an error run:</div>
-                <pre>
-                    <code>
-                        ngrok config add-authtoken [Your token]
-                    </code>
-                </pre>
-                <p>This will add your authtoken to the default <code>ngrok.yml</code> configuration file</p>
-            </li>
-            <li>
-                Copy the URL that is tunneling localhost:3000 to your
-                <code>.env</code> without <code>https://</code>, e.g.
-                <pre>
-                    <code>
-                        BASE_URL=asdf1234.ngrok.app
-                    </code>
-                </pre>
-            </li>
-        </ol>
-    </div>
-    <div>
-        <h2>Telephony Server</h2>
+    <section>
         <div>
-            <p>
-                The <code>TelephonyServer</code> is a
-                server that is responsible for receiving and making phone calls.
-                The server is built using FastAPI and utilizes Twilio for telephony services.
+            <h1>Working with Phone Calls</h1>
+            <p>How to use agents with inbound and outbound phone calls.</p>
+            <h2>Overview</h2>
+            <p>Vocode supports using agents with inbound and outbound phone calls.
+                You can <a href="./create.html">create custom agents</a> and use them to fullfill a variety of cases
+                like information collection, appointment scheduling, sales, customer support, and more.
             </p>
-            <p>To set up the server, you would need to clone the Vocode repo or copy the <a>Telephony App</a> directory</p>
         </div>
         <div>
-            <h3>Running the Server</h3>
-            <p>Choose one of the following methods to run the server:
-                <ul>
-                    <li>Run Everything with Docker</li>
-                    <li>Run Python Directly</li>
-                </ul>
-            </p>
-            <h4>Option 1: Run Everything With Docker</h4>
+            <h2>Requirements</h2>
             <ol>
-                <li>Build the telephony app Docker image.
-                    <ol>
-                        <li>Navigate to the <code>telephony_app</code> directory</li>
-                        <li>Run the following command to build the Docker Image</li>
-                        <pre>
-                            <code>
-                                docker build -t vocode-telephony-app .
-                            </code>
-                        </pre>
-                    </ol>
-                </li>
-                <li>
-                    Run the application using <code>docker-compose</code>.
-                    <ol>
-                        <li>From the <code>telephony_app</code> directory, run:</li>
-                        <pre>
-                            <code>
-                                docker-compose up
-                            </code>
-                        </pre>
-                    </ol>
-                </li>
+                <li><a href="https://ngrok.com/">Ngrok</a> (used to host the <code>TelephonyServer</code> locally)</li>
+                <li><a href="https://ffmpeg.org/">ffmpeg</a>(If you have Homebrew installed, run <code>brew install ffmpeg</code>)</li>
+                <li><a href="https://redis.io/">Redis</a>(If you have Homebrew installed, run <code>brew install redis</code>)</li>
+                <li><a href="https://www.docker.com/">Docker</a>(optional)</li>
             </ol>
-            <h4>Option 2: Run Python directly</h4>
-            <p>Run the following steps from the <code>telephony_app</code> directory</p>
+        </div>
+        <div>
+            <h2>Environments</h2>
             <ol>
-                <li>Install <a>Poetry</a> and install dependencies.
-                    <pre>
-                        <code class="code-block">poetry install</code>
-                    </pre>
-                    <p>You need to have python version >= 3.10 and &lt;3.12</p>
-                </li>
-                <li>Run Redis with the default port of 6379.
-                    <p>For example, if you are using Homebrew:</p>
-                    <pre>
-                        <code class="code-block">brew services start redis</code>
-                    </pre>
-                    <div>Or if you prefer to use Docker for this part:</div>
-                    <pre>
-                        <code class="code-block">docker run -dp 6379:6379 -it redis/redis-stack:latest</code>
-                    </pre>
-                </li>
                 <li>
-                    Run the server with <code>uvicorn</code>(should be already
-                    installed in step 1).
+                    You will need to get API keys for:
+                    <ul>
+                        <li><a>Deepgram</a> (for speech transcription)</li>
+                        <li><a>OpenAI</a> (for the underlying agent)</li>
+                        <li><a>Azure</a> (for speech synthesis)</li>
+                        <li><a>Twilio</a> (for telephony)</li>
+                    </ul>
+                </li>
+                <li>Navigate to the <code>telephony_app</code> folder, located at the <code>apps</code>folder</li>
+                <li>
+                    Copy the <code>.env.template</code> file and fill in the values
+                    of your API keys. You can easily do so by running the code below:
                     <pre>
                         <code>
-                            poetry run uvicorn main:app --port 3000
+                            cp .env.template .env
+                        </code>
+                    </pre>
+                </li>
+                <li>
+                    Set up hosting so that Twilio can hit your server. An easy
+                    way to do this is through <code>ngrok</code>: in our code we set it
+                    up to be running on port 3000, run:
+                    <pre>
+                        <code>
+                            ngrok http 3000
+                        </code>
+                    </pre>
+                    <div>If you are setting it up through <code>ngrok</code> and the code above gets an error run:</div>
+                    <pre>
+                        <code>
+                            ngrok config add-authtoken [Your token]
+                        </code>
+                    </pre>
+                    <p>This will add your authtoken to the default <code>ngrok.yml</code> configuration file</p>
+                </li>
+                <li>
+                    Copy the URL that is tunneling localhost:3000 to your
+                    <code>.env</code> without <code>https://</code>, e.g.
+                    <pre>
+                        <code>
+                            BASE_URL=asdf1234.ngrok.app
                         </code>
                     </pre>
                 </li>
             </ol>
         </div>
         <div>
-            <h3>Setting up an inbound number</h3>
+            <h2>Telephony Server</h2>
             <div>
+                <p>
+                    The <code>TelephonyServer</code> is a
+                    server that is responsible for receiving and making phone calls.
+                    The server is built using FastAPI and utilizes Twilio for telephony services.
+                </p>
+                <p>To set up the server, you would need to clone the Vocode repo or copy the <a>Telephony App</a> directory</p>
+            </div>
+            <div>
+                <h3>Running the Server</h3>
+                <p>Choose one of the following methods to run the server:
+                    <ul>
+                        <li>Run Everything with Docker</li>
+                        <li>Run Python Directly</li>
+                    </ul>
+                </p>
+                <h4>Option 1: Run Everything With Docker</h4>
                 <ol>
-                    <li>Create a <a>Twilio</a> account</li>
-                    <li>
-                        Once inside your dashboard, go to Phone Numbers ->
-                        Manage -> Buy a number to get a phone number.
-                        <img src="./img/buy_number.png" />
+                    <li>Build the telephony app Docker image.
+                        <ol>
+                            <li>Navigate to the <code>telephony_app</code> directory</li>
+                            <li>Run the following command to build the Docker Image</li>
+                            <pre>
+                                <code>
+                                    docker build -t vocode-telephony-app .
+                                </code>
+                            </pre>
+                        </ol>
                     </li>
                     <li>
-                        Then, go to Phone Numbers -> Manage -> Active Numbers
-                        and select the number you want to set up.
-                        <img src="./img/Configure_number.png" />
+                        Run the application using <code>docker-compose</code>.
+                        <ol>
+                            <li>From the <code>telephony_app</code> directory, run:</li>
+                            <pre>
+                                <code>
+                                    docker-compose up
+                                </code>
+                            </pre>
+                        </ol>
+                    </li>
+                </ol>
+                <h4>Option 2: Run Python directly</h4>
+                <p>Run the following steps from the <code>telephony_app</code> directory</p>
+                <ol>
+                    <li>Install <a>Poetry</a> and install dependencies.
+                        <pre>
+                            <code class="code-block">poetry install</code>
+                        </pre>
+                        <p>You need to have python version >= 3.10 and &lt;3.12</p>
+                    </li>
+                    <li>Run Redis with the default port of 6379.
+                        <p>For example, if you are using Homebrew:</p>
+                        <pre>
+                            <code class="code-block">brew services start redis</code>
+                        </pre>
+                        <div>Or if you prefer to use Docker for this part:</div>
+                        <pre>
+                            <code class="code-block">docker run -dp 6379:6379 -it redis/redis-stack:latest</code>
+                        </pre>
                     </li>
                     <li>
-                        Update the config to point the Webhook URL to
-                        <code>https://&lt;YOUR BASE URL&gt;/inbound_call</code> -
-                        if you're using <code>ngrok</code>, it looks like
-                        <code>https://asdf1234.ngrok.app/inbound_call</code>
-                        <img src="./img/twilio_number_config.png" />
+                        Run the server with <code>uvicorn</code>(should be already
+                        installed in step 1).
+                        <pre>
+                            <code>
+                                poetry run uvicorn main:app --port 3000
+                            </code>
+                        </pre>
                     </li>
-                    <li>Hit <span>Save</span> and call the number!</li>
                 </ol>
             </div>
-        </div>
-        <div>
-            <h3>Executing Outbound Calls</h3>
             <div>
-                <p>Make sure the server we just set up is
-                    already running. Then follow these steps:
+                <h3>Setting up an inbound number</h3>
+                <div>
                     <ol>
+                        <li>Create a <a>Twilio</a> account</li>
                         <li>
-                            In <code>outbound_call.py</code>
-                            replace the <code>to_phone</code> with the
-                            number you want to call and the
-                            <code>from_phone</code> with the number you want to call from.
-                            <ul>
-                                <li>
-                                    In order to make a call from the <code>from_phone</code>, you must have
-                                    access to it via Twilio (either a number purchased via Twilio or verify the caller ID) see "Setting up an inbound number" above.
-                                </li>
-                            </ul>
-                            <img src="./img/outbound_calls.png" />
+                            Once inside your dashboard, go to Phone Numbers ->
+                            Manage -> Buy a number to get a phone number.
+                            <img src="./img/buy_number.png" />
                         </li>
-                        <li>Run the script with <code>poetry run python outbound_call.py</code>.</li>
+                        <li>
+                            Then, go to Phone Numbers -> Manage -> Active Numbers
+                            and select the number you want to set up.
+                            <img src="./img/Configure_number.png" />
+                        </li>
+                        <li>
+                            Update the config to point the Webhook URL to
+                            <code>https://&lt;YOUR BASE URL&gt;/inbound_call</code> -
+                            if you're using <code>ngrok</code>, it looks like
+                            <code>https://asdf1234.ngrok.app/inbound_call</code>
+                            <img src="./img/twilio_number_config.png" />
+                        </li>
+                        <li>Hit <span>Save</span> and call the number!</li>
                     </ol>
-                </p>
+                </div>
             </div>
-        </div>
-        <div>
-            <h3>Configuration</h3>
             <div>
-                <p>
-                    Both the <code>OutboundCall</code> (in <code>outbound_call.py</code>) and <code>InboundCallConfig</code> (in <code>telephony_app.py</code>) classes can
-                    accept a <code>TranscriberConfig</code>, <code>AgentConfig</code> or <code>SynthesizerConfig</code>. The default transcriber is Deepgram and the default synthesizer is Azure.
-                </p>
-                <p>
-                    This example below sets up an agent that spells every word it receives. Any text-in, text-out function can be converted into a voice conversation by subclassing
-                    <code>BaseAgent</code> and creating an <code>AgentFactory</code>.
-                </p>
-                <pre>
-                    <code>
-                        import typing
-                        from typing import Optional, Tuple
+                <h3>Executing Outbound Calls</h3>
+                <div>
+                    <p>Make sure the server we just set up is
+                        already running. Then follow these steps:
+                        <ol>
+                            <li>
+                                In <code>outbound_call.py</code>
+                                replace the <code>to_phone</code> with the
+                                number you want to call and the
+                                <code>from_phone</code> with the number you want to call from.
+                                <ul>
+                                    <li>
+                                        In order to make a call from the <code>from_phone</code>, you must have
+                                        access to it via Twilio (either a number purchased via Twilio or verify the caller ID) see "Setting up an inbound number" above.
+                                    </li>
+                                </ul>
+                                <img src="./img/outbound_calls.png" />
+                            </li>
+                            <li>Run the script with <code>poetry run python outbound_call.py</code>.</li>
+                        </ol>
+                    </p>
+                </div>
+            </div>
+            <div>
+                <h3>Configuration</h3>
+                <div>
+                    <p>
+                        Both the <code>OutboundCall</code> (in <code>outbound_call.py</code>) and <code>InboundCallConfig</code> (in <code>telephony_app.py</code>) classes can
+                        accept a <code>TranscriberConfig</code>, <code>AgentConfig</code> or <code>SynthesizerConfig</code>. The default transcriber is Deepgram and the default synthesizer is Azure.
+                    </p>
+                    <p>
+                        This example below sets up an agent that spells every word it receives. Any text-in, text-out function can be converted into a voice conversation by subclassing
+                        <code>BaseAgent</code> and creating an <code>AgentFactory</code>.
+                    </p>
+                    <pre>
+                        <code>
+                            import typing
+                            from typing import Optional, Tuple
 
-                        from vocode.streaming.agent.abstract_factory import AbstractAgentFactory
-                        from vocode.streaming.agent.base_agent import BaseAgent, RespondAgent
-                        from vocode.streaming.agent.chat_gpt_agent import ChatGPTAgent
-                        from vocode.streaming.models.agent import AgentConfig, AgentType, ChatGPTAgentConfig
+                            from vocode.streaming.agent.abstract_factory import AbstractAgentFactory
+                            from vocode.streaming.agent.base_agent import BaseAgent, RespondAgent
+                            from vocode.streaming.agent.chat_gpt_agent import ChatGPTAgent
+                            from vocode.streaming.models.agent import AgentConfig, AgentType, ChatGPTAgentConfig
 
 
-                        class SpellerAgentConfig(AgentConfig, type="agent_speller"):
-                            pass
+                            class SpellerAgentConfig(AgentConfig, type="agent_speller"):
+                                pass
 
 
-                        class SpellerAgent(RespondAgent[SpellerAgentConfig]):
+                            class SpellerAgent(RespondAgent[SpellerAgentConfig]):
+                                async def respond(
+                                    self,
+                                    human_input: str,
+                                    conversation_id: str,
+                                    is_interrupt: bool = False,
+                                ) -> Tuple[Optional[str], bool]:
+                                    return "".join(c + " " for c in human_input), False
+
+
+                            class SpellerAgentFactory(AbstractAgentFactory):
+                                def create_agent(self, agent_config: AgentConfig) -> BaseAgent:
+                                    # If the agent configuration type is CHAT_GPT, create a ChatGPTAgent.
+                                    if isinstance(agent_config, ChatGPTAgentConfig):
+                                        return ChatGPTAgent(agent_config=agent_config)
+                                    # If the agent configuration type is agent_speller, create a SpellerAgent.
+                                    elif isinstance(agent_config, SpellerAgentConfig):
+                                        return SpellerAgent(agent_config=agent_config)
+                                    # If the agent configuration type is not recognized, raise an exception.
+                                    raise Exception("Invalid agent config")
+                        </code>
+                    </pre>
+                    <p>An <code>AgentFactory</code> instance is passed into the <code>TelephonyServer</code> in <code>telephony_app.py</code>.</p>
+                    <p>
+                        We provide a small set of agents with pre-configured <code>AgentConfig</code>s, including one that sets up ChatGPT with a configured prompt.
+                        For more information: check our <a>Python Quickstart</a>.
+                    </p>
+                </div>
+                <div>
+                    <h4>Accessing Call Information In Your Agent</h4>
+                    <p>
+                        We store the <code>to</code> and <code>from</code> numbers in the <code>ConfigManager</code>. To access these numbers in your agent, you
+                        can instantiate the manager to hook into the same Redis instance:
+                    </p>
+                    <pre>
+                        <code>
+                            class SpellerAgent(BaseAgent):
+                            def __init__(self, agent_config: SpellerAgentConfig):
+                                super().__init__(agent_config=agent_config)
+                                self.config_manager = RedisConfigManager()
+
                             async def respond(
                                 self,
                                 human_input: str,
                                 conversation_id: str,
                                 is_interrupt: bool = False,
                             ) -> Tuple[Optional[str], bool]:
+                                call_config = self.config_manager.get_config(conversation_id)
+                                if call_config is not None:
+                                    from_phone = call_config.twilio_from
+                                    to_phone = call_config.twilio_to
                                 return "".join(c + " " for c in human_input), False
-
-
-                        class SpellerAgentFactory(AbstractAgentFactory):
-                            def create_agent(self, agent_config: AgentConfig) -> BaseAgent:
-                                # If the agent configuration type is CHAT_GPT, create a ChatGPTAgent.
-                                if isinstance(agent_config, ChatGPTAgentConfig):
-                                    return ChatGPTAgent(agent_config=agent_config)
-                                # If the agent configuration type is agent_speller, create a SpellerAgent.
-                                elif isinstance(agent_config, SpellerAgentConfig):
-                                    return SpellerAgent(agent_config=agent_config)
-                                # If the agent configuration type is not recognized, raise an exception.
-                                raise Exception("Invalid agent config")
-                    </code>
-                </pre>
-                <p>An <code>AgentFactory</code> instance is passed into the <code>TelephonyServer</code> in <code>telephony_app.py</code>.</p>
-                <p>
-                    We provide a small set of agents with pre-configured <code>AgentConfig</code>s, including one that sets up ChatGPT with a configured prompt.
-                    For more information: check our <a>Python Quickstart</a>.
-                </p>
-            </div>
-            <div>
-                <h4>Accessing Call Information In Your Agent</h4>
-                <p>
-                    We store the <code>to</code> and <code>from</code> numbers in the <code>ConfigManager</code>. To access these numbers in your agent, you
-                    can instantiate the manager to hook into the same Redis instance:
-                </p>
-                <pre>
-                    <code>
-                        class SpellerAgent(BaseAgent):
-                        def __init__(self, agent_config: SpellerAgentConfig):
-                            super().__init__(agent_config=agent_config)
-                            self.config_manager = RedisConfigManager()
-
-                        async def respond(
-                            self,
-                            human_input: str,
-                            conversation_id: str,
-                            is_interrupt: bool = False,
-                        ) -> Tuple[Optional[str], bool]:
-                            call_config = self.config_manager.get_config(conversation_id)
-                            if call_config is not None:
-                                from_phone = call_config.twilio_from
-                                to_phone = call_config.twilio_to
-                            return "".join(c + " " for c in human_input), False
-                    </code>
-                </pre>
+                        </code>
+                    </pre>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </body>
 </html>
