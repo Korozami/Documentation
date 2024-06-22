@@ -21,15 +21,16 @@
     <div>
         <h2>Agent Factories</h2>
         <p>
-            Agent factories specify which agents are available to your app. In order to connect an agent to your app, you must first define an agent factory. To do so,
-            subclass the <code>AbstractAgentFactory</code> class to specify how agents are created. Here you can import and use your own custom agents.
+            Agent factories specify which agents are available to your app. To connect an agent to your app, you must first define an agent factory.
+            Subclass the <code>AbstractAgentFactory</code> class to specify how agents are created. In this subclass, you can import and use your own custom agents.
         </p>
     </div>
     <div>
         <h3>Example</h3>
         <p>
-            First define your <code>AgentFactory</code>. In this example, we are creating a factory for a new type of agent called MyActionAgent:
+            In this example, we are creating a factory for a new type of agent called MyActionAgent:
         </p>
+        <p>First define your <code>AgentFactory</code>:</p>
         <pre>
             <code>
                 from vocode.streaming.agent.abstract_factory import AbstractAgentFactory
@@ -53,7 +54,7 @@
                             raise Exception("Invalid agent config")
             </code>
         </pre>
-        <p>Then, in your app, you can connect the agent to the app:</p>
+        <p>Then, in your app, connect the agent to the app:</p>
         <pre>
             <code>
                 from vocode.streaming.telephony.server.base import TelephonyServer
