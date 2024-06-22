@@ -1,0 +1,46 @@
+* {
+    color: rgb(219, 217, 217);
+    background-color: rgb(40, 40, 40);
+}
+
+img {
+    width: 1000px;
+    display: block;
+    margin: 2%;
+}
+
+li {
+    margin: 1%;
+}
+
+p {
+    margin-bottom: 1%;
+}
+
+h1, h2, h3, h4 {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+code {
+    background-color: black;
+    border: 1px solid white;
+    padding: 3px;
+    border-radius: 5px;
+
+}
+
+pre > code {
+    padding-right: 150px;
+}
+
+pre {
+    display: flex;
+    justify-content: center;
+    width: 1000px;
+    background-color: rgb(40, 40, 40);
+}
+
+.code-block {
+    padding: 2% 5%;
+}

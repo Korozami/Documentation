@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentation</title>
+    <link rel="stylesheet" href="index.css" >
 </head>
 <body>
     <nav>
@@ -129,18 +130,18 @@
             <ol>
                 <li>Install <a>Poetry</a> and install dependencies.
                     <pre>
-                        <code>poetry install</code>
+                        <code class="code-block">poetry install</code>
                     </pre>
                     <p>You need to have python version >= 3.10 and &lt;3.12</p>
                 </li>
                 <li>Run Redis with the default port of 6379.
-                    <div>For example, if you are using Homebrew:</div>
+                    <p>For example, if you are using Homebrew:</p>
                     <pre>
-                        <code>brew services start redis</code>
+                        <code class="code-block">brew services start redis</code>
                     </pre>
                     <div>Or if you prefer to use Docker for this part:</div>
                     <pre>
-                        <code>docker run -dp 6379:6379 -it redis/redis-stack:latest</code>
+                        <code class="code-block">docker run -dp 6379:6379 -it redis/redis-stack:latest</code>
                     </pre>
                 </li>
                 <li>
@@ -209,10 +210,10 @@
             <div>
                 <p>
                     Both the <code>OutboundCall</code> (in <code>outbound_call.py</code>) and <code>InboundCallConfig</code> (in <code>telephony_app.py</code>) classes can
-                    accept a <code>TranscriberConfig</code>, <code>AgentConfig</code> or <code>SynthesizerConfig</code> - the default transcriber is Deepgram and the default synthesizer is Azure.
+                    accept a <code>TranscriberConfig</code>, <code>AgentConfig</code> or <code>SynthesizerConfig</code>. The default transcriber is Deepgram and the default synthesizer is Azure.
                 </p>
                 <p>
-                    This example below sets up an agent that spells every word that is sent to it - any text-in, text-out function can be turned into a voice conversation by subclassing
+                    This example below sets up an agent that spells every word it receives. Any text-in, text-out function can be converted into a voice conversation by subclassing
                     <code>BaseAgent</code> and creating an <code>AgentFactory</code>.
                 </p>
                 <pre>
@@ -254,14 +255,14 @@
                 </pre>
                 <p>An <code>AgentFactory</code> instance is passed into the <code>TelephonyServer</code> in <code>telephony_app.py</code>.</p>
                 <p>
-                    We provide a small set of agents with already created <code>AgentConfig</code>s, including, importantly, one that sets up ChatGPT with a configured prompt:
-                    see our <a>Python Quickstart</a> for more info.
+                    We provide a small set of agents with pre-configured <code>AgentConfig</code>s, including one that sets up ChatGPT with a configured prompt.
+                    For more information: check our <a>Python Quickstart</a>.
                 </p>
             </div>
             <div>
                 <h4>Accessing Call Information In Your Agent</h4>
                 <p>
-                    We store the <code>to</code> and <code>from</code> numbers in the <code>ConfigManager</code> - so if you’d like to access them in your agent, you
+                    We store the <code>to</code> and <code>from</code> numbers in the <code>ConfigManager</code>. To access these numbers in your agent, you
                     can instantiate the manager to hook into the same Redis instance:
                 </p>
                 <pre>
